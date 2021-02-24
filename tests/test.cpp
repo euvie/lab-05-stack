@@ -4,7 +4,7 @@
 #include "stack.hpp"
 #include "stack2.hpp"
 
-template<typename T>
+template<typename T> //тесты структуры
 struct Traffic_light{
   T red;
   T yellow;
@@ -102,3 +102,4 @@ TEST(Stack, Struct){
   EXPECT_EQ(amount.head().yellow, 5);
   EXPECT_EQ(amount.head().green, 6);
 }
+
