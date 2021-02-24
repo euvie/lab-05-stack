@@ -1,4 +1,4 @@
-// Copyright 2020 Your Name <your_email>
+// Copyright 2020 Your Name euvie
 
 #include <gtest/gtest.h>
 #include "stack.hpp"
@@ -103,3 +103,57 @@ TEST(Stack, Struct){
   EXPECT_EQ(amount.head().green, 6);
 }
 
+template<typename T>
+class Weather {
+ public:
+  Weather(T t1, T t2, T t3)
+      :snow(t1), rain(t2), sun(t3)
+  {}
+  Weather(const Weather &Weather_today) = delete;
+  auto operator=(const Weather &Weather_today) = delete;
+  Weather(Weather &&Weather_today) = default;
+  auto operator=(Weather &&Weather_today) noexcept -> Weather& = default;
+
+  T snow;
+  T rain;
+  T sun;
+};
+
+TEST(Stack2, Constructor){
+  EXPECT_TRUE(std::is_move_constructible<Stack<int>>::value);
+  EXPECT_TRUE(std::is_move_assignable<Stack<int>>::value);
+  EXPECT_FALSE(std::is_copy_constructible<Stack<int>>::value);
+  EXPECT_FALSE(std::is_copy_assignable<Stack<int>>::value);
+}
+
+TEST(Stack2, push_pop){
+  Stack2<Weather<int>> amount;
+  Weather<int> test1 (1, 2, 3);
+  Weather<int> test2 (4, 5, 6);
+  Weather<int> test3 (7, 8, 9);
+  amount.push(std::move(test1));
+  amount.push(std::move(test2));
+  amount.push(std::move(test3));
+  EXPECT_EQ(amount.head().snow,  7);
+  EXPECT_EQ(amount.head().rain,  8);
+  EXPECT_EQ(amount.head().sun,  9);
+
+  amount.pop();
+  EXPECT_EQ(amount.head().snow,  4);
+  EXPECT_EQ(amount.head().rain,  5);
+  EXPECT_EQ(amount.head().sun,  6);
+}
+
+TEST(Stack2, push_emplace){
+  Stack2<Weather<int>> amount;
+  amount.push_emplace(1,2,3);
+  amount.push_emplace(4,5,6);
+  amount.push_emplace(7,8,9);
+  EXPECT_EQ(amount.head().snow,  7);
+  EXPECT_EQ(amount.head().rain,  8);
+  EXPECT_EQ(amount.head().sun,  9);
+  amount.pop();
+  EXPECT_EQ(amount.head().snow,  4);
+  EXPECT_EQ(amount.head().rain,  5);
+  EXPECT_EQ(amount.head().sun,  6);
+}

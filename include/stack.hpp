@@ -1,7 +1,7 @@
 // Copyright 2020 Your Name euvie
 
-#ifndef INCLUDE_HEADER_HPP_
-#define INCLUDE_HEADER_HPP_
+#ifndef INCLUDE_STACK_HPP_
+#define INCLUDE_STACK_HPP_
 #include <iostream>
 
 template <typename T>   //структура, описывающая узел списка
@@ -14,7 +14,21 @@ template <typename T>
 class Stack
 {
  public:
-  Stack() : top (nullptr) {} // по умолчанию пустой стэк //возможно неправильно
+  //Stack() : top (nullptr) {} // по умолчанию пустой стэк //возможно неправильно
+
+  Stack() = default;
+
+  Stack(const Stack &stack) = delete;
+  auto operator = (const Stack &stack) = delete;
+
+  Stack(Stack &&stack) noexcept {
+    this->top = stack.top;
+    stack.top = nullptr;
+  }
+  auto operator = (Stack &&stack)  noexcept -> Stack&{
+    this->top = stack.top;
+    stack.top = nullptr;
+  }
 
   void push(T&& value){
     Node<T> *newnode;
@@ -69,4 +83,4 @@ class Stack
    Node<T> *top = nullptr; //указатель на вершину стэка
 };
 
-#endif // INCLUDE_HEADER_HPP_
+#endif // INCLUDE_STACK_HPP_
