@@ -15,7 +15,6 @@ template <typename T>
 class Stack
 {
  public:
-
   Stack() = default; // дефолтный конструктор, по умолчанию создает объект
                      // класса
 
@@ -65,9 +64,9 @@ class Stack
   }
 
   const T& head() const{ //возвращаем константную сылку чтобы не копировать
-    if (top)
+    if (top) {
       return top->value;
-    else {
+    } else {
       throw std::runtime_error("Empty stack head");
     }
   }
