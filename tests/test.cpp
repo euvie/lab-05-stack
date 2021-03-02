@@ -16,11 +16,18 @@ TEST(Example, EmptyTest) {
 }
 
 TEST(Stack, NonCopiable_Movable){
-  EXPECT_TRUE(std::is_move_constructible<Stack<int>>::value);
+  EXPECT_TRUE(std::is_move_constructible<Stack<int>>::value); //
+                                                              // проверка что
+                                                              // класс создан
+                                                              // перемещаемым
   EXPECT_TRUE(std::is_move_assignable<Stack<int>>::value);
-  EXPECT_FALSE(std::is_copy_constructible<Stack<int>>::value);
+  EXPECT_FALSE(std::is_copy_constructible<Stack<int>>::value); //
+                                                               // проверка что
+                                                               // класс не
+                                                               // копируемый
   EXPECT_FALSE(std::is_copy_assignable<Stack<int>>::value);
   EXPECT_TRUE(std::is_nothrow_move_constructible<Stack<int>>::value);
+                                      // конструктор не выбрасывает исключения
 }
 
 TEST(Stack, Push_rvalue){
@@ -28,10 +35,10 @@ TEST(Stack, Push_rvalue){
 
   EXPECT_THROW(a.head(), std::runtime_error);
 
-  a.push(3.14);
+  a.push(3.14); // rvalue
   EXPECT_EQ(a.head(), 3.14);
 
-  double tmp = 41.3;
+  double tmp = 41.3; // lvalue
   a.push(std::move(tmp));
   EXPECT_EQ(a.head(), 41.3);
 }

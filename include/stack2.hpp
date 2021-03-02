@@ -2,6 +2,7 @@
 
 #ifndef INCLUDE_STACK2_HPP_
 #define INCLUDE_STACK2_HPP_
+#include <utility>
 
 template <typename T>
 class Stack2 {
@@ -21,8 +22,11 @@ class Stack2 {
   }
 
   template<typename...Args>
-  void push_emplace(Args&&...value){
-    top = new Node<T>{{std::forward<Args>(value)...}, top};
+  void push_emplace(Args&&...value){ // push для нескольких элементов
+    top = new Node<T>{{std::forward<Args>(value)...}, top};   // forward
+                                                              // сохраняет тип
+                                                              // ссылки которую
+                                                              // передают
   }
 
   void push(T &&value) {
@@ -30,9 +34,9 @@ class Stack2 {
   }
 
   const T &head() const {
-    if (top)
+    if (top){
       return top->value;
-    else {
+    }else {
       throw std::runtime_error("Empty stack head");
     }
   }

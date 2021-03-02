@@ -3,6 +3,7 @@
 #ifndef INCLUDE_STACK_HPP_
 #define INCLUDE_STACK_HPP_
 #include <iostream>
+#include <utility>
 
 template <typename T>   //структура, описывающая узел списка
 struct Node{
@@ -14,18 +15,23 @@ template <typename T>
 class Stack
 {
  public:
-  //Stack() : top (nullptr) {} // по умолчанию пустой стэк //возможно неправильно
 
-  Stack() = default;
+  Stack() = default; // дефолтный конструктор, по умолчанию создает объект
+                     // класса
 
-  Stack(const Stack &stack) = delete;
+  Stack(const Stack &stack) = delete; // консруктор копирования
+                                      // delete запрещает копирование
   auto operator = (const Stack &stack) = delete;
 
-  Stack(Stack &&stack) noexcept {
+  Stack(Stack &&stack) noexcept { // конструктор перемещения
     this->top = stack.top;
     stack.top = nullptr;
   }
-  auto operator = (Stack &&stack)  noexcept -> Stack&{
+  auto operator = (Stack &&stack)  noexcept -> Stack&{ //noexcept отвечает за
+                                                       // исключения// работает
+                                                       // быстрее чем throw()
+                                                       // оператор перегрузки
+                                                       // для объектов класса
     this->top = stack.top;
     stack.top = nullptr;
   }
@@ -59,9 +65,9 @@ class Stack
   }
 
   const T& head() const{ //возвращаем константную сылку чтобы не копировать
-    if(top)
+    if (top)
       return top->value;
-    else{
+    else {
       throw std::runtime_error("Empty stack head");
     }
   }
@@ -77,7 +83,7 @@ class Stack
 
   ~Stack(){
     clearer();
-  };
+  }
 
   private:
    Node<T> *top = nullptr; //указатель на вершину стэка
